@@ -1,13 +1,20 @@
-no = 0
-deadline = 0
-task = 0
-a = 0
-item = 0
-todo_list = [['No.', 'Deadline', 'Task']]
+todo_list = [['No.', 'Deadline', 'Task', 'Check']]
 
 
 def mark():
-    pass
+    if len(todo_list) == 1:
+        print('You have no task to mark.')
+        input('\nPress Enter to continue.')
+    else:
+        for item in todo_list:
+            print("{:<3}| {:<10}| {:<20}| {:<5}".format(item[0], item[1], item[2], item[3]))
+        a = int(input('Mark task number: '))
+        if 0 < a < len(todo_list):
+            b = todo_list[a]
+            b[3] = 'O'
+            todo_list[a] = b
+        else:
+            print('\nError. Please try again.')
 
 
 def incomplete():
@@ -19,32 +26,38 @@ def complete():
 
 
 def view():
-    global item
-    for item in todo_list:
-        print("{:<5} {:<10} {:<20}".format(item[0], item[1], item[2]))
+    if len(todo_list) == 1:
+        print('You have no task on your to-do list.')
+    else:
+        for item in todo_list:
+            print("{:<3}| {:<10}| {:<20}| {:<5}".format(item[0], item[1], item[2], item[3]))
+    input('\nPress Enter to continue.')
 
 
 def add():
-    global no
     no = len(todo_list)
-    global deadline
     deadline = input('Input deadline: ')
-    global task
     task = input('Input task: ')
-    global a
-    a = [no, deadline, task]
+    a = [no, deadline, task, 'X']
     todo_list.append(a)
 
 
 def remove():
-    global a
-    a = int(input('Remove task number: '))
-    todo_list.pop(a)
-    global item
-    for item in range(1, len(todo_list)):
-        b = todo_list[item]
-        b[0] = int(item)
-        todo_list[item] = b
+    if len(todo_list) == 1:
+        print('You have no task to remove.')
+        input('\nPress Enter to continue.')
+    else:
+        for item in todo_list:
+            print("{:<5} | {:<10} | {:<20} | {:<5}".format(item[0], item[1], item[2], item[3]))
+        a = int(input('\nRemove task number: '))
+        if 0 < a < len(todo_list):
+            todo_list.pop(a)
+            for item in range(1, len(todo_list)):
+                b = todo_list[item]
+                b[0] = int(item)
+                todo_list[item] = b
+        else:
+            print('\nError. Please try again.')
 
 
 def save():
@@ -56,20 +69,26 @@ def load():
 
 
 def clear():
-    pass
+    if len(todo_list) > 1:
+        while len(todo_list) > 1:
+            todo_list.pop(1)
+        print('Your to-do list is now cleared.')
+    else:
+        print('Your to-do list has already cleared.')
+    input('\nPress Enter to continue.')
 
 
 def search():
     pass
 
 
-choice = int(input('Choose an option: '))
+while True:
 
-while choice != 8:
-
-    print('\n--- ADVANCE TO-DO APP ---\n1. View tasks\n2. Add task\n3. Remove task',
+    print('\n--- ADVANCE TO-DO APP ---\n\n1. View tasks\n2. Add task\n3. Remove task',
           '\n4. Save tasks\n5. Load tasks\n6. Clear all tasks\n7. Search task',
           '\n8. Exit')
+
+    choice = int(input('\nChoose an option: '))
 
     if choice == 1:
         view()
@@ -86,6 +105,7 @@ while choice != 8:
     elif choice == 7:
         search()
     elif choice == 8:
+        print('Goodbye, see you again.')
         break
     else:
-        print('nope')
+        print('Error. Please try again.')
