@@ -1,10 +1,11 @@
+import pandas as pd
 todo_list = [['No.', 'Deadline', 'Task', 'Check']]
 
 
 def mark():
     if len(todo_list) == 1:
         print('You have no task to mark.')
-        input('\nPress Enter to continue.')
+        input('Press Enter to continue.')
     else:
         view()
         print()
@@ -21,7 +22,7 @@ def mark():
                 todo_list[a] = b
                 i += 1
             else:
-                print('\nError. Please try again.')
+                print('Error. Please try again.')
 
 
 def view():
@@ -30,18 +31,19 @@ def view():
     else:
         for item in todo_list:
             print("{:<3}| {:<10}| {:<20}| {:<5}".format(item[0], item[1], item[2], item[3]))
-    input('\nPress Enter to continue.')
+    input('Press Enter to continue.')
 
 
 def add():
     task = int(input('How many tasks do you want to add: '))
     for i in range(task):
         no = len(todo_list)
-        deadline = input('\nInput deadline: ')
+        deadline = input('Input deadline: ')
         task = input('Input task: ')
         a = [no, deadline, task, 'X']
         todo_list.append(a)
         print()
+    save()
 
 
 def remove():
@@ -66,11 +68,23 @@ def remove():
 
 
 def save():
-    pass
+    no = []
+    deadline = []
+    task = []
+    check = []
+    for i in range(1, len(todo_list)):
+        no.append(todo_list[i][0])
+        deadline.append(todo_list[i][1])
+        task.append(todo_list[i][2])
+        check.append(todo_list[i][3])
+    df = pd.DataFrame({'No.': no, 'Deadline': deadline, 'Task': task, 'Check': check})
+    df.to_csv("To-do list.csv", index=False, encoding='utf-8')
 
 
 def load():
-    pass
+    df = pd.read_csv("To-do list.csv")
+    for v in df:
+        todo_list.append(list(df[v]))
 
 
 def clear():
@@ -117,32 +131,36 @@ def search():
     pass
 
 
-while True:
+def main():
+    load()
+    while True:
 
-    print('\n--- ADVANCE TO-DO APP ---\n\n1. View tasks\n2. Add task\n3. Remove task',
-          '\n4. Clear tasks\n5. Mark task\n 6. Load tasks\n7. Save tasks\n8. Search task',
-          '\n9. Exit')
+        print('\n--- ADVANCE TO-DO APP ---\n\n1. View tasks\n2. Add task\n3. Remove task',
+              '\n4. Clear tasks\n5. Mark task\n6. Save tasks\n7. Search task',
+              '\n8. Exit')
 
-    choice = int(input('\nChoose an option: '))
+        choice = int(input('\nChoose an option: '))
 
-    if choice == 1:
-        view()
-    elif choice == 2:
-        add()
-    elif choice == 3:
-        remove()
-    elif choice == 4:
-        clear()
-    elif choice == 5:
-        mark()
-    elif choice == 6:
-        load()
-    elif choice == 7:
-        save()
-    elif choice == 8:
-        search()
-    elif choice == 9:
-        print('Goodbye, see you again.')
-        break
-    else:
-        print('Error. Please try again.')
+        if choice == 1:
+            view()
+        elif choice == 2:
+            add()
+        elif choice == 3:
+            remove()
+        elif choice == 4:
+            clear()
+        elif choice == 5:
+            mark()
+        elif choice == 6:
+            save()
+        elif choice == 7:
+            search()
+        elif choice == 8:
+            print('Goodbye, see you again.')
+            break
+        else:
+            print('Error. Please try again.')
+
+
+if __name__ == '__main__':
+    main()
