@@ -1,6 +1,7 @@
 No.,Deadline,Task,Check
-1,2,3,4
-a,b,c,d
-a,b,c,d
-X,X,X,X
-5,"Sep 14, 25",Presentation,X
+1,01/01/2025,a,X
+2,02/02/2025,b,X
+3,03/03/2025,c,X
+4,09/30/2025,Literature,X
+5,09/29/2025,Math,X
+6,09/28/2025,History,X

@@ -1,4 +1,7 @@
 import pandas as pd
+import csv
+import re
+
 todo_list = [['No.', 'Deadline', 'Task', 'Check']]
 
 
@@ -34,11 +37,20 @@ def view():
     input('Press Enter to continue.')
 
 
+def is_valid_date(date_string):
+    pattern = r'^(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])/(\d{4})$'
+    if re.match(pattern, date_string):
+        return True
+    return False
+
+
 def add():
     task = int(input('How many tasks do you want to add: '))
     for i in range(task):
         no = len(todo_list)
-        deadline = input('Input deadline: ')
+        deadline = ''
+        while not is_valid_date(deadline):
+            deadline = input('Please input deadline (mm/dd/yyyy): ')
         task = input('Input task: ')
         a = [no, deadline, task, 'X']
         todo_list.append(a)
@@ -82,9 +94,13 @@ def save():
 
 
 def load():
-    df = pd.read_csv("To-do list.csv")
-    for v in df:
-        todo_list.append(list(df[v]))
+    list = []
+    with open('To-do list.csv', newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            list.append(row)
+    global todo_list
+    todo_list = list
 
 
 def clear():
